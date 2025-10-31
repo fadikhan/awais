@@ -18,8 +18,8 @@ export function cleanAIText(text: string): string {
   cleaned = cleaned.replace(/\*\*[^*]+:\*\*/g, "");
 
   // Remove improvement notes like "**Key improvements made:**"
-  cleaned = cleaned.replace(/---\s*\*\*Key improvements.*$/s, "");
-  cleaned = cleaned.replace(/\*\*Key improvements.*$/s, "");
+  cleaned = cleaned.replace(/---\s*\*\*Key improvements[\s\S]*$/, "");
+  cleaned = cleaned.replace(/\*\*Key improvements[\s\S]*$/, "");
 
   // Remove metadata markers
   cleaned = cleaned.replace(/\*\*Professionalism:\*\*/gi, "");
@@ -92,7 +92,7 @@ export function extractBestOption(text: string): string {
   if (!text) return "";
 
   // Try to find the first option after "Option 1" or similar
-  const optionMatch = text.match(/(?:Option 1|Professional)[^>]*>\s*([^*]+?)(?=\*\*Option|$)/s);
+  const optionMatch = text.match(/(?:Option 1|Professional)[^>]*>\s*([^*]+?)(?=\*\*Option|$)/);
   
   if (optionMatch && optionMatch[1]) {
     return cleanAIText(optionMatch[1]);
